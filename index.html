@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>1 POUND FISH</title>
+</head>
+<body>
+    <div>
+        <audio class="meuAudio" src="midia/audio/1-fish-man---o-fish-al-video (1).mp3"></audio>
+    </div>
+
+    <div>
+        <button class="glow-on-hover playButton">Click On Me</button>
+    </div>
+
+    <div class="gifContainer"></div>
+
+    <div class="layersContainer"></div>
+
+    <script>
+        const playButton = document.querySelector('.playButton');
+        const audio = document.querySelector('.meuAudio');
+        const gifContainer = document.querySelector('.gifContainer');
+        const layersContainer = document.querySelector('.layersContainer');
+
+        function gerarCorAleatoria() {
+            return '#' + Math.floor(Math.random() * 16777215).toString(16);
+        }
+
+        function criarCamadasPiscantes(numCamadas) {
+            let tamanho = 100;
+
+            for (let i = 0; i < numCamadas; i++) {
+                const layer = document.createElement('div');
+                layer.classList.add('blinking-layer');
+                layer.style.zIndex = i + 1;
+                layer.style.width = `${tamanho}%`;
+                layer.style.height = `${tamanho}%`;
+                layersContainer.appendChild(layer);
+
+                tamanho *= 0.95;
+
+                setInterval(() => {
+                    layer.style.backgroundColor = gerarCorAleatoria();
+                }, 100 + i * 100);
+            }
+        }
+
+        audio.addEventListener('loadeddata', () => {
+            console.log('Áudio carregado com sucesso!');
+        });
+
+        audio.addEventListener('error', (e) => {
+            console.error('Erro ao carregar o áudio:', e);
+        });
+
+        playButton.addEventListener('click', function() {
+            console.log('Botão clicado!');
+            playButton.style.display = 'none';
+            audio.play();
+
+            criarCamadasPiscantes(12);
+
+            const gif = document.createElement('img');
+            gif.src = 'midia/img/squidward-dance-transparent.gif';
+            gif.alt = 'GIF animado';
+            gif.style.position = 'absolute';
+            gif.style.zIndex = 1001;
+            gifContainer.appendChild(gif);
+        });
+    </script>
+</body>
+</html>
